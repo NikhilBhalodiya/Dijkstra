@@ -1,8 +1,0 @@
-prefix=/home/nikhil/Dijkstra/catkin_ws/devel
-
-Name: dijkstra
-Description: Description of dijkstra
-Version: 0.0.0
-Cflags: -I/home/nikhil/Dijkstra/catkin_ws/src/dijkstra/include -I/home/nikhil/Dijkstra/catkin_ws/src/dijkstra/include/dijkstra
-Libs: -L/home/nikhil/Dijkstra/catkin_ws/devel/lib 
-Requires: roscpp rospy std_msgs geometry_msgs nav_msgs
