@@ -36,7 +36,11 @@ public:
         parent_node = &parent;
         g_cost = parent_node->g_cost + sqrt(pow(parent_node->grid_x - grid_x, 2) +
                                                   pow(parent_node->grid_y - grid_y, 2)*1.0);
+    }
 
+    bool operator ==(const GraphNode *rhs) const
+    {
+        return grid_x == rhs->grid_x && grid_y == rhs->grid_y;
     }
 };
 
