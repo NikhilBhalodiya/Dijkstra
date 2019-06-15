@@ -10,12 +10,13 @@ static int COUNT = 0;
 
 class GraphNode
 {
-protected:
+//protected:
+public:
+    GraphNode *parent_node = nullptr;
+
     int node_id;
     static int COUNT;
 
-    GraphNode *parent_node = nullptr;
-public:
     int grid_x;
     int grid_y;
 

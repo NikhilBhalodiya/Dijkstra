@@ -53,6 +53,7 @@ private:
     vector<GraphNode*> neighbours;
     vector<GraphNode*> open_set;
     vector<GraphNode*> closed_set;
+    vector<int> close_set;
 
     void mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &msg);
     void StartEndGoalCallback(const geometry_msgs::PoseStamped::ConstPtr &msg);

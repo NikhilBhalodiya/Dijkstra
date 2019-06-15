@@ -48,52 +48,58 @@ void Dijkstra::planPathDijkstra()
         current_node = frontier.top();
         frontier.pop();
 
+        if(current_node == goal_node)
+        {
+            break;
+        }
         ROS_INFO("current node %d %d",current_node->grid_x,current_node->grid_y);   ;
         eraseFromOpenSet(current_node);
+        updated_map.data[map->info.width*current_node->grid_y + current_node->grid_x] = 100;
+        map_pub.publish(updated_map);
         closed_set.push_back(current_node);
-//      expandCurrentNode();
 
         getNeighbours();
         for(auto neighbor: neighbours)
         {
-//            ROS_INFO("neighbour %d %d",neighbor->grid_x,neighbor->grid_y);
+            ROS_INFO("neighbour %d %d",neighbor->grid_x,neighbor->grid_y);
             if(isInClosedSet(neighbor))
             {
+                ROS_INFO("in closed set %d %d",neighbor->grid_x,neighbor->grid_y);
                 continue;
             }
             double tent_g_cost = current_node->g_cost + distBetween(current_node,neighbor);
 
-//            if(isNotInOpenSet(&neighbor))
-//            {
-//                frontier.push(&neighbor);
-//                open_set.push_back(neighbor);
-//            }
-//            else if (tent_g_cost >= neighbor.g_cost)
-//            {
-//                continue;
-//            }
-//            neighbor.g_cost = tent_g_cost;
+            if(isNotInOpenSet(neighbor))
+            {
+                ROS_INFO("neighbor pushed  %d %d",neighbor->grid_x,neighbor->grid_y);   ;
+                frontier.push(neighbor);
+                open_set.push_back(neighbor);
+            }
+            else if (tent_g_cost >= neighbor->g_cost)
+            {
+                continue;
+            }
+            neighbor->g_cost = tent_g_cost;
         }
 
     }
 
 }
 
-//bool Dijkstra::isNotInOpenSet(GraphNode *node)
-//{
-//    auto x = find(closed_set.begin(),closed_set.end(),node);
-//    if(x != open_set.end())
-//    {
-//       return false;
-//    }
-//    return true;
-//}
+bool Dijkstra::isNotInOpenSet(GraphNode *node)
+{
+    auto x = find(closed_set.begin(),closed_set.end(),node);
+    if(x != closed_set.end())
+    {
+       return false;
+    }
+    return true;
+}
 
 double Dijkstra::distBetween(GraphNode *node1,GraphNode *node2)
 {
     return sqrt(pow(node1->grid_x - node2->grid_x, 2) +
                 pow(node1->grid_y - node2->grid_y, 2)*1.0);
-
 
 }
 
@@ -110,9 +116,9 @@ void Dijkstra::eraseFromOpenSet(GraphNode *node)
 bool Dijkstra::isInClosedSet(GraphNode *node)
 {
     auto x = find(closed_set.begin(),closed_set.end(),node);
-    if(x != open_set.end())
+    if(x != closed_set.end())
     {
-       return true;
+      return true;
     }
     return false;
 }
